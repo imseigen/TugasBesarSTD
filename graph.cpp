@@ -147,7 +147,7 @@ void buildJalan(HalteGraph &G)
     }
 }
 
-void printHalteGraph(HalteGraph G)
+void printHalteGraph(HalteGraph G, beamList L)
 {
     adrHalteVertex v = G.firstHalte;
     adrJalan e;
@@ -166,6 +166,7 @@ void printHalteGraph(HalteGraph G)
         v = v->nextHalte;
     }
 }
+
 
 int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
 {
@@ -187,7 +188,8 @@ int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
     return totalJarak;
 }
 
-void createBeam(string idBeam, halteVertex* location, adrBeam &b)
+//Beam
+void createBeam(string idBeam, adrHalteVertex location, adrBeam &b)
 {
     b = new beam;
     b->idBeam = idBeam;
@@ -200,7 +202,18 @@ void initBeamList(beamList &L)
     L.firstBeam = nullptr;
 }
 
-void insertBeam(beamList &L, HalteGraph &G, string idBeam, halteVertex* location)
+adrBeam searchBeam (beamList L, string beamID)
+{
+    adrBeam b = L.firstBeam;
+
+    while (b != nullptr && b->idBeam != beamID)
+    {
+        b = b->nextBeam;
+    }
+    return b;
+}
+
+void insertBeam(beamList &L, HalteGraph G, string idBeam, adrHalteVertex location)
 {
     adrBeam newBeam;
     createBeam(idBeam, location, newBeam);
@@ -217,6 +230,38 @@ void insertBeam(beamList &L, HalteGraph &G, string idBeam, halteVertex* location
             b = b->nextBeam;
         }
         b->nextBeam = newBeam;
+    }
+}
+
+void buildBeam (beamList &L, HalteGraph G)
+{
+    string beamID, locationID;
+    adrHalteVertex location;
+    adrBeam newBeam;
+
+    cout << "Masukkan id beam ('0' untuk keluar): ";
+    cin >> beamID;
+
+    while (beamID != "0")
+    {
+        newBeam = searchBeam(L, beamID);
+
+        if (newBeam != nullptr)
+        {
+            cout << "Beam sudah ada\n";
+        }
+        else 
+        {
+            cout << "\nMasukan lokasi beam: ";
+            cin >> locationID;
+            location = searchHalte(G, locationID);
+
+            insertBeam(L, G, beamID, location);
+            cout << "\nBeam berhasil dimasukkan\n";
+        }
+
+        cout << "\nMasukkan id beam ('0' untuk keluar): ";
+        cin >> beamID;
     }
 }
 

@@ -35,8 +35,8 @@ typedef struct beam* adrBeam;
 struct beam
 {
     string idBeam;
-    // halteVertex[10] historyJalan; // kalo gaboleh stack integer aja
-    halteVertex* location;
+    adrHalteVertex historyJalan[10]; 
+    adrHalteVertex location;
     adrBeam nextBeam;
 };
 
@@ -54,7 +54,6 @@ adrHalteVertex searchHalte(HalteGraph G, string halteID);
 void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jarakHalte);
 void buildHalteGraph(HalteGraph &G);
 void buildJalan(HalteGraph &G);
-void printHalteGraph(HalteGraph G);
 
 int hitungTotalJarak(HalteGraph G, beamList L, string idBeam);
 int jumlahBeam(HalteGraph G, beamList L, string halteID);
@@ -63,7 +62,11 @@ void findRuteTerpendek(HalteGraph G, string startHalteID, string endHalteID);
 // Beam
 void createBeam (string idBeam, halteVertex* location, beam &b);
 void initBeamList (beamList &L);
-void insertBeam (beamList &L, HalteGraph &G, string idBeam, halteVertex* location);
-void beamJalan (beamList &L, HalteGraph &G);
-void beamRecharge (beamList &L, string idBeam);
+adrBeam searchBeam (beamList L, string beamID);
+void insertBeam (beamList &L, HalteGraph G, string beamID, halteVertex* location);
+void buildBeam (beamList &L, HalteGraph G);
+void beamJalan (beamList &L, HalteGraph G);
+void beamRecharge (beamList &L, string beamID);
+
+void printHalteGraph(HalteGraph G, beamList L);
 #endif

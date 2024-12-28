@@ -10,7 +10,7 @@ int menu ()
     cout << "\n========== MENU ==========\n";
     cout << "1. Tambah halte" << endl;
     cout << "2. Tambah jalan" << endl;
-    cout << "3. Print Halte & Jalan" << endl;
+    cout << "3. Print Halte & Beam" << endl;
     cout << "4. Tambah beam" << endl;
     cout << "5. Kendarai beam" << endl;
     cout << "6. Recharge beam" << endl;
@@ -45,8 +45,11 @@ int main()
             break;
 
         case 3:
-            printHalteGraph(G);
+            printHalteGraph(G, L);
             break;
+
+        case 4:
+            buildBeam(L, G);
 
         default:
             cout << "Input salah";
