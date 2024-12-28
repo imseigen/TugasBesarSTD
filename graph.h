@@ -55,7 +55,6 @@ void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, in
 void buildHalteGraph(HalteGraph &G);
 void buildJalan(HalteGraph &G);
 
-int hitungTotalJarak(HalteGraph G, beamList L, string idBeam);
 void findRuteTerpendek(HalteGraph G, string startHalteID, string endHalteID);
 
 // Beam

@@ -168,24 +168,6 @@ void buildJalan(HalteGraph &G)
     }
 }
 
-
-/*int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
-{
-    adrBeam b = searchBeam(L, idBeam);
-
-    if (b == nullptr) return 0; // Beam tidak ditemukan
-
-    int totalJarak = 0;
-    int i;
-
-    while (b->historyJalan[i] != nullptr)
-    {
-        totalJarak += jalan->jarakHalte;
-        jalan = jalan->nextEdge;
-    }
-    return totalJarak;
-}*/
-
 //Beam
 void createBeam(string idBeam, adrHalteVertex location, adrBeam &b)
 {
