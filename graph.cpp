@@ -8,10 +8,10 @@ void createHalteVertex(string halteID, adrHalteVertex &v)
     v->firstEdge = nullptr;
 }
 
-void createJalan(string tujuanHalteID, int jarakHalte, adrJalan &e)
+void createJalan(adrHalteVertex tujuan, int jarakHalte, adrJalan &e)
 {
     e = new jalan();
-    e->tujuanHalteID = tujuanHalteID;
+    e->tujuanHalte = tujuan;
     e->jarakHalte = jarakHalte;
     e->nextEdge = nullptr;
 }
@@ -23,36 +23,59 @@ void initHalteGraph(HalteGraph &G)
 
 void addHalteVertex(HalteGraph &G, string halteID)
 {
-    adrHalteVertex newHalte;
-    createHalteVertex(halteID, newHalte);
+    adrHalteVertex newHalte = searchHalte(G, halteID);
 
-    if (G.firstHalte == nullptr) // Jika G.firstHalte kosong
+    if (newHalte != nullptr)
     {
-        G.firstHalte = newHalte;
+        cout << "Halte sudah ada\n";
     }
     else
     {
-        adrHalteVertex v = G.firstHalte;
-        while (v->nextHalte != nullptr)
+        createHalteVertex(halteID, newHalte);
+        if (G.firstHalte == nullptr) 
         {
-            v = v->nextHalte;
+            G.firstHalte = newHalte;
         }
-        v->nextHalte = newHalte;
+        else
+        {
+            adrHalteVertex v = G.firstHalte;
+            while (v->nextHalte != nullptr)
+            {
+                v = v->nextHalte;
+            }
+            v->nextHalte = newHalte;
+        }
+        
+        cout << "Halte berhasil ditambahkan\n";
     }
+
+    
 }
 
-void addJalan(HalteGraph &G, string asalHalteID, string tujuanHalteID, int jarakHalte)
+adrHalteVertex searchHalte(HalteGraph G, string halteID)
 {
-    adrHalteVertex asal = G.firstHalte;
-    while (asal != nullptr && asal->halteID != asalHalteID)
+    adrHalteVertex v = G.firstHalte;
+
+    while (v != nullptr && v->halteID != halteID)
     {
-        asal = asal->nextHalte;
+        v = v->nextHalte;
     }
 
-    if (asal != nullptr)
+    return v;
+}
+
+void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jarakHalte)
+{
+    adrJalan newJalan;
+    adrHalteVertex tujuan = searchHalte(G, tujuanHalteID);
+
+    if (tujuan == nullptr)
     {
-        adrJalan newJalan;
-        createJalan(tujuanHalteID, jarakHalte, newJalan);
+        cout << "Halte tujuan tidak ada\n";
+    }
+    else 
+    {
+        createJalan(tujuan, jarakHalte, newJalan);
 
         if (asal->firstEdge == nullptr)
         {
@@ -67,34 +90,79 @@ void addJalan(HalteGraph &G, string asalHalteID, string tujuanHalteID, int jarak
             }
             tempJalan->nextEdge = newJalan;
         }
+
+        cout << "Jalan berhasil ditambahkan\n";
     }
 }
 
 void buildHalteGraph(HalteGraph &G)
 {
-    string input;
+    string input_halte;
+
+    //Input halte
     cout << "Masukkan nama halte ('0' untuk keluar): ";
-    cin >> input;
-    while (input != "0")
+    cin >> input_halte;
+    while (input_halte != "0")
     {
-        addHalteVertex(G, input);
-        cout << "Masukkan nama halte ('0' untuk keluar): ";
-        cin >> input;
+        addHalteVertex(G, input_halte);
+
+        cout << "\nMasukkan nama halte ('0' untuk keluar): ";
+        cin >> input_halte;
+    }
+}
+
+void buildJalan(HalteGraph &G) 
+{
+    string input_halte, input_jalan;
+    int jarak;
+    
+    cout << "Masukkan nama halte ('0' untuk keluar): ";
+    cin >> input_halte;
+    while (input_halte != "0")
+    {
+        adrHalteVertex halte = searchHalte(G, input_halte);
+
+        if (halte != nullptr)
+        {
+            cout << "\nMasukkan halte tujuan ('0' untuk keluar): ";
+            cin >> input_jalan;
+            while (input_jalan != "0") 
+            {
+                cout << "Masukkan jarak halte ('0' untuk keluar): ";
+                cin >> jarak;
+                
+                addJalan(G, halte, input_jalan, jarak);
+                
+                cout << "\nMasukkan halte tujuan ('0' untuk keluar): ";
+                cin >> input_jalan;
+            }
+        }
+        else
+        {
+            cout << "\nHalte tujuan tidak ada\n";
+        }
+
+        cout << "\nMasukkan nama halte ('0' untuk keluar): ";
+        cin >> input_halte;
     }
 }
 
 void printHalteGraph(HalteGraph G)
 {
     adrHalteVertex v = G.firstHalte;
+    adrJalan e;
+
     while (v != nullptr)
     {
-        cout << "Halte ID: " << v->halteID << endl;
-        adrJalan e = v->firstEdge;
+        e = v->firstEdge;
+
+        cout << "Halte " << v->halteID;
         while (e != nullptr)
         {
-            cout << "  Tujuan: " << e->tujuanHalteID << ", Jarak: " << e->jarakHalte << endl;
+            cout << " |-- " << e->jarakHalte << " --> Halte " << e->tujuanHalte->halteID << "|";
             e = e->nextEdge;
         }
+        cout << endl;
         v = v->nextHalte;
     }
 }
@@ -159,7 +227,7 @@ void beamJalan(beamList &L, HalteGraph &G)
     {
         if (b->location != nullptr && b->location->firstEdge != nullptr)
         {
-            cout << "Beam " << b->idBeam << " berjalan dari " << b->location->halteID << " ke " << b->location->firstEdge->tujuanHalteID << endl;
+            cout << "Beam " << b->idBeam << " berjalan dari " << b->location->halteID << " ke " << b->location->firstEdge->tujuanHalte->halteID << endl;
             b->location = G.firstHalte;  // Update ke halte berikutnya
         }
         b = b->nextBeam;

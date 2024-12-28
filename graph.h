@@ -19,7 +19,7 @@ struct halteVertex
 
 struct jalan
 {
-    string tujuanHalteID;
+    adrHalteVertex tujuanHalte;
     int jarakHalte;
     adrJalan nextEdge;
 };
@@ -47,11 +47,13 @@ struct beamList
 
 // Halte & Jalan
 void createHalteVertex(string halteID, adrHalteVertex &v);
-void createJalan(string tujuanHalteID, int jarakHalte, adrJalan &e);
+void createJalan(adrHalteVertex tujuan, int jarakHalte, adrJalan &e);
 void initHalteGraph(HalteGraph &G);
 void addHalteVertex(HalteGraph &G, string halteID);
-void addJalan(HalteGraph &G, string asalHalteID, string tujuanHalteID, int jarakHalte);
+adrHalteVertex searchHalte(HalteGraph G, string halteID);
+void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jarakHalte);
 void buildHalteGraph(HalteGraph &G);
+void buildJalan(HalteGraph &G);
 void printHalteGraph(HalteGraph G);
 
 int hitungTotalJarak(HalteGraph G, beamList L, string idBeam);
