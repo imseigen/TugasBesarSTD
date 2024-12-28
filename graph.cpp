@@ -147,27 +147,6 @@ void buildJalan(HalteGraph &G)
     }
 }
 
-void printHalteGraph(HalteGraph G, beamList L)
-{
-    adrHalteVertex v = G.firstHalte;
-    adrJalan e;
-
-    while (v != nullptr)
-    {
-        e = v->firstEdge;
-
-        cout << "Halte " << v->halteID;
-        while (e != nullptr)
-        {
-            cout << " |-- " << e->jarakHalte << " --> Halte " << e->tujuanHalte->halteID << "|";
-            e = e->nextEdge;
-        }
-        cout << endl;
-        v = v->nextHalte;
-    }
-}
-
-
 int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
 {
     adrBeam b = L.firstBeam;
@@ -294,5 +273,39 @@ void beamRecharge(beamList &L, string idBeam)
     else
     {
         cout << "Beam dengan ID " << idBeam << " tidak ditemukan." << endl;
+    }
+}
+
+
+void printHalteGraph(HalteGraph G, beamList L)
+{
+    adrHalteVertex v = G.firstHalte;
+    adrBeam b = L.firstBeam;
+    adrJalan e;
+
+    while (v != nullptr)
+    {
+        e = v->firstEdge;
+
+        cout << "Halte " << v->halteID;
+        while (e != nullptr)
+        {
+            cout << " |-- " << e->jarakHalte << " --> Halte " << e->tujuanHalte->halteID << "|";
+            e = e->nextEdge;
+        }
+        cout << endl;
+
+        cout << "Beam di halte: ";
+        while (b != nullptr)
+        {
+            if (b->location == v)
+            {
+                cout << "| " << b->idBeam << " |";
+            }
+            b = b->nextBeam;
+        }
+        cout << endl;
+
+        v = v->nextHalte;
     }
 }
