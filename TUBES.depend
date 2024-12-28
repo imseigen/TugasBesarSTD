@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1735384175 source:c:\users\abiza\onedrive\documents\clo 1\tubes_optimalisasibeam-main (1)\tubes_optimalisasibeam-main\main.cpp
+	<iostream>
+	"graph.h"
+
+1735384175 c:\users\abiza\onedrive\documents\clo 1\tubes_optimalisasibeam-main (1)\tubes_optimalisasibeam-main\graph.h
+	<iostream>
+
+1735384366 source:c:\users\abiza\onedrive\documents\clo 1\tubes_optimalisasibeam-main (1)\tubes_optimalisasibeam-main\graph.cpp
+	"graph.h"
+
