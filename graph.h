@@ -45,6 +45,21 @@ struct beamList
     adrBeam firstBeam;
 };
 
+// Stack
+typedef struct elmStack *adrStack;
+
+struct elmStack
+{
+    adrHalteVertex info;
+    adrStack next;
+};
+
+struct Stack
+{
+    adrStack Top;
+};
+
+
 // Halte & Jalan
 void createHalteVertex(string halteID, adrHalteVertex &v);
 void createJalan(adrHalteVertex tujuan, int jarakHalte, adrJalan &e);
@@ -67,4 +82,13 @@ void beamJalan (beamList &L, HalteGraph G, string beamID, string tujuan);
 void beamRecharge (beamList &L, string beamID);
 
 void printHalteGraph(HalteGraph G, beamList L);
+
+// Stack
+void createStack (Stack &S);
+bool isEmpty (Stack S);
+bool isFull (Stack S);
+void push (Stack &S, adrHalteVertex x);
+adrHalteVertex pop (Stack &S);
+void printInfo (Stack S);
+
 #endif

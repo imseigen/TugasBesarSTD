@@ -295,12 +295,13 @@ void beamRecharge(beamList &L, string idBeam)
 void printHalteGraph(HalteGraph G, beamList L)
 {
     adrHalteVertex v = G.firstHalte;
-    adrBeam b = L.firstBeam;
+    adrBeam b;
     adrJalan e;
 
     while (v != nullptr)
     {
         e = v->firstEdge;
+        b = L.firstBeam;
 
         cout << "Halte " << v->halteID;
         while (e != nullptr)
@@ -311,6 +312,7 @@ void printHalteGraph(HalteGraph G, beamList L)
         cout << endl;
 
         cout << "Beam di halte: ";
+        
         while (b != nullptr)
         {
             if (b->location == v)
@@ -323,4 +325,7 @@ void printHalteGraph(HalteGraph G, beamList L)
 
         v = v->nextHalte;
     }
+
+    // Stack
+    
 }
