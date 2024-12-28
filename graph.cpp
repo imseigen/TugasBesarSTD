@@ -64,21 +64,19 @@ adrHalteVertex searchHalte(HalteGraph G, string halteID)
     return v;
 }
 
-void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jarakHalte)
+void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, int jarakHalte)
 {
     adrJalan newJalan;
-    adrHalteVertex tujuan = searchHalte(G, tujuanHalteID);
 
-    if (tujuan == nullptr)
+    if (tujuanHalte == nullptr)
     {
         cout << "Halte tujuan tidak ada\n";
     }
     else 
     {
-        createJalan(tujuan, jarakHalte, newJalan);
-
         if (asal->firstEdge == nullptr)
         {
+            createJalan(tujuanHalte, jarakHalte, newJalan);
             asal->firstEdge = newJalan;
         }
         else
@@ -86,8 +84,10 @@ void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jara
             adrJalan tempJalan = asal->firstEdge;
             while (tempJalan->nextEdge != nullptr)
             {
+                if (tempJalan->tujuanHalte == tujuanHalte) return;
                 tempJalan = tempJalan->nextEdge;
             }
+            createJalan(tujuanHalte, jarakHalte, newJalan);
             tempJalan->nextEdge = newJalan;
         }
 
@@ -128,21 +128,30 @@ void buildJalan(HalteGraph &G)
             cin >> input_jalan;
             while (input_jalan != "0") 
             {
-                cout << "Masukkan jarak halte ('0' untuk keluar): ";
-                cin >> jarak;
-                
-                addJalan(G, halte, input_jalan, jarak);
-                
-                adrHalteVertex temp = searchHalte(G, input_jalan);
-                addJalan(G, temp, halte->halteID, jarak);
-                
-                cout << "\nMasukkan halte tujuan ('0' untuk keluar): ";
-                cin >> input_jalan;
+                adrHalteVertex jalan = searchHalte(G, input_jalan);
+
+                if (jalan != nullptr)
+                {
+                    cout << "Masukkan jarak halte ('0' untuk keluar): ";
+                    cin >> jarak;
+                    
+                    addJalan(G, halte, jalan, jarak);
+
+                    addJalan(G, jalan, halte, jarak);
+                    
+                    cout << "\nMasukkan halte tujuan ('0' untuk keluar): ";
+                    cin >> input_jalan;
+                    jalan = searchHalte(G, input_jalan);
+                }
+                else
+                {
+                    cout << "Halte tujuan tidak ada\n";
+                }
             }
         }
         else
         {
-            cout << "\nHalte tujuan tidak ada\n";
+            cout << "\nHalte tidak ada\n";
         }
 
         cout << "\nMasukkan nama halte ('0' untuk keluar): ";

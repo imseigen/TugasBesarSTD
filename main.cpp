@@ -29,6 +29,8 @@ int main()
     beamList L;
     initHalteGraph(G);
     initBeamList(L);
+    
+    string beamID;
 
     int input = menu();
 
@@ -56,8 +58,6 @@ int main()
             break;
 
         case 6:
-            string beamID;
-            
             cout << "Id beam yang ingin di recharge: ";
             cin >> beamID;
             beamRecharge(L, beamID);

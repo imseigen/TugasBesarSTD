@@ -51,7 +51,7 @@ void createJalan(adrHalteVertex tujuan, int jarakHalte, adrJalan &e);
 void initHalteGraph(HalteGraph &G);
 void addHalteVertex(HalteGraph &G, string halteID);
 adrHalteVertex searchHalte(HalteGraph G, string halteID);
-void addJalan(HalteGraph &G, adrHalteVertex asal, string tujuanHalteID, int jarakHalte);
+void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, int jarakHalte);
 void buildHalteGraph(HalteGraph &G);
 void buildJalan(HalteGraph &G);
 
