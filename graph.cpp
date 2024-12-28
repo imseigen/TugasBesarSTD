@@ -84,8 +84,17 @@ void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, in
             adrJalan tempJalan = asal->firstEdge;
             while (tempJalan->nextEdge != nullptr)
             {
-                if (tempJalan->tujuanHalte == tujuanHalte) return;
+                if (tempJalan->tujuanHalte == tujuanHalte) 
+                {
+                    cout << "Tujuan halte sudah ada\n";
+                    return;
+                }
                 tempJalan = tempJalan->nextEdge;
+            }
+            if (tempJalan->tujuanHalte == tujuanHalte) 
+            {
+                cout << "Tujuan halte sudah ada\n";
+                return;
             }
             createJalan(tujuanHalte, jarakHalte, newJalan);
             tempJalan->nextEdge = newJalan;
