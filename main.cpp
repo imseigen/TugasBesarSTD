@@ -50,6 +50,18 @@ int main()
 
         case 4:
             buildBeam(L, G);
+            break;
+
+        case 5:
+            break;
+
+        case 6:
+            string beamID;
+            
+            cout << "Id beam yang ingin di recharge: ";
+            cin >> beamID;
+            beamRecharge(L, beamID);
+            break;
 
         default:
             cout << "Input salah";

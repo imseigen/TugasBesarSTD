@@ -133,6 +133,9 @@ void buildJalan(HalteGraph &G)
                 
                 addJalan(G, halte, input_jalan, jarak);
                 
+                adrHalteVertex temp = searchHalte(G, input_jalan);
+                addJalan(G, temp, halte->halteID, jarak);
+                
                 cout << "\nMasukkan halte tujuan ('0' untuk keluar): ";
                 cin >> input_jalan;
             }
@@ -147,25 +150,23 @@ void buildJalan(HalteGraph &G)
     }
 }
 
-int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
+
+/*int hitungTotalJarak(HalteGraph G, beamList L, string idBeam)
 {
-    adrBeam b = L.firstBeam;
-    while (b != nullptr && b->idBeam != idBeam)
-    {
-        b = b->nextBeam;
-    }
+    adrBeam b = searchBeam(L, idBeam);
 
     if (b == nullptr) return 0; // Beam tidak ditemukan
 
     int totalJarak = 0;
-    adrJalan jalan = b->location->firstEdge;
-    while (jalan != nullptr)
+    int i;
+
+    while (b->historyJalan[i] != nullptr)
     {
         totalJarak += jalan->jarakHalte;
         jalan = jalan->nextEdge;
     }
     return totalJarak;
-}
+}*/
 
 //Beam
 void createBeam(string idBeam, adrHalteVertex location, adrBeam &b)
@@ -244,9 +245,22 @@ void buildBeam (beamList &L, HalteGraph G)
     }
 }
 
-void beamJalan(beamList &L, HalteGraph &G)
+void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
 {
-    adrBeam b = L.firstBeam;
+    adrBeam b = searchBeam(L, beamID);
+
+    if (b == nullptr)
+    {
+        cout << "Beam tidak ditemukan\n";
+    }
+    else 
+    {
+        adrHalteVertex v = searchHalte(G, tujuan);
+
+
+    }
+
+    /*adrBeam b = L.firstBeam;
     while (b != nullptr)
     {
         if (b->location != nullptr && b->location->firstEdge != nullptr)
@@ -255,19 +269,20 @@ void beamJalan(beamList &L, HalteGraph &G)
             b->location = G.firstHalte;  // Update ke halte berikutnya
         }
         b = b->nextBeam;
-    }
+    }*/
 }
 
 void beamRecharge(beamList &L, string idBeam)
 {
-    adrBeam b = L.firstBeam;
-    while (b != nullptr && b->idBeam != idBeam)
-    {
-        b = b->nextBeam;
-    }
+    adrBeam b = searchBeam(L, idBeam);
 
     if (b != nullptr)
     {
+        for (int i = 0; i < 10; i++)
+        {
+            b->historyJalan[i] = nullptr;
+        }
+
         cout << "Beam " << idBeam << " di-recharge." << endl;
     }
     else
@@ -290,7 +305,7 @@ void printHalteGraph(HalteGraph G, beamList L)
         cout << "Halte " << v->halteID;
         while (e != nullptr)
         {
-            cout << " |-- " << e->jarakHalte << " --> Halte " << e->tujuanHalte->halteID << "|";
+            cout << " |-- " << e->jarakHalte << " m --> Halte " << e->tujuanHalte->halteID << "|";
             e = e->nextEdge;
         }
         cout << endl;

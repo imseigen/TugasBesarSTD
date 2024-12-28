@@ -56,16 +56,15 @@ void buildHalteGraph(HalteGraph &G);
 void buildJalan(HalteGraph &G);
 
 int hitungTotalJarak(HalteGraph G, beamList L, string idBeam);
-int jumlahBeam(HalteGraph G, beamList L, string halteID);
 void findRuteTerpendek(HalteGraph G, string startHalteID, string endHalteID);
 
 // Beam
-void createBeam (string idBeam, halteVertex* location, beam &b);
+void createBeam (string idBeam, adrHalteVertex location, adrBeam &b);
 void initBeamList (beamList &L);
 adrBeam searchBeam (beamList L, string beamID);
-void insertBeam (beamList &L, HalteGraph G, string beamID, halteVertex* location);
+void insertBeam (beamList &L, HalteGraph G, string beamID, adrHalteVertex location);
 void buildBeam (beamList &L, HalteGraph G);
-void beamJalan (beamList &L, HalteGraph G);
+void beamJalan (beamList &L, HalteGraph G, string beamID, string tujuan);
 void beamRecharge (beamList &L, string beamID);
 
 void printHalteGraph(HalteGraph G, beamList L);
