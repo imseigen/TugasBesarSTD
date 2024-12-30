@@ -312,6 +312,7 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
             int jarak = 0;
             Stack S;
             bool visited[50];
+            bool status = false;
             elmStack* x;
             adrJalan w;
 
@@ -325,9 +326,11 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
             x = createElmStack(v);
             push(S, x);
 
-            while (!isEmpty(S))
+            while (!isEmpty(S) && !status)
             {
                 x = pop(S);
+                jarak += w->jarakHalte;
+
                 if (!isVisited(visited, G, x->info))
                 {
                     visit(visited, G, x->info);
@@ -337,9 +340,8 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
                     {
                         b->location = x->info;
                         cout << "Baterai beam habis\n";
-                        return;
+                        status = true;
                     } else {
-                        b->historyJalan[10 - b->battery] = x->info;
                         b->battery--;
                     }
 
@@ -347,7 +349,7 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
                     {
                         b->location = x->info;
                         cout << "Sudah sampai di tujuan dengan jarak " << jarak << " m\n";
-                        return;;
+                        status = true;
                     }
 
                     w = x->info->firstEdge;
@@ -357,8 +359,8 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
                         {
                             x = createElmStack(w->tujuanHalte);
                             push(S, x);
-                            jarak += w->jarakHalte;
                         }
+                        w = w->nextEdge;
                     }
                 }
             }
