@@ -84,5 +84,20 @@ int main()
     // beamRecharge(L, "Beam 2");
     // beamRecharge(L, "Beam 3");
 
+    Stack S;
+    createStack(S);
+    buildHalteGraph(G);
+    printHalteGraph(G,L);
+    cout << endl;
+
+    adrHalteVertex x = G.firstHalte;
+    push(S, x);
+    printInfo(S);
+    cout << endl;
+
+    adrHalteVertex y = pop(S);
+    printHalteGraph(G, L);
+    printInfo(S);
+
     return 0;
 }

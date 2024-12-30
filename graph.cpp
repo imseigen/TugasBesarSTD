@@ -360,7 +360,6 @@ void printHalteGraph(HalteGraph G, beamList L)
         else 
         {
             S.Top = x->nextHalte;
-            x->nextHalte = nullptr;
         }
 
         return x;
@@ -368,20 +367,15 @@ void printHalteGraph(HalteGraph G, beamList L)
 
     void printInfo (Stack S)
     {
-        Stack q;
+        Stack q = S;
         adrHalteVertex x;
 
         while (!isEmpty(S))
         {
             x = pop(S);
             cout << x->halteID << " ";
-            push(q, x);
         }
         
-        while (!isEmpty(q))
-        {
-            x = pop(q);
-            push(S, x);
-        }
+        S.Top = q.Top;
         cout << endl;
     }
