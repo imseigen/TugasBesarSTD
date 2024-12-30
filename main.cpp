@@ -32,44 +32,44 @@ int main()
     
     string beamID;
 
-    int input = menu();
+    // int input = menu();
 
-    while (input != 0)
-    {
-        switch (input)
-        {
-        case 1:
-            buildHalteGraph(G);
-            break;
+    // while (input != 0)
+    // {
+    //     switch (input)
+    //     {
+    //     case 1:
+    //         buildHalteGraph(G);
+    //         break;
 
-        case 2:
-            buildJalan(G);
-            break;
+    //     case 2:
+    //         buildJalan(G);
+    //         break;
 
-        case 3:
-            printHalteGraph(G, L);
-            break;
+    //     case 3:
+    //         printHalteGraph(G, L);
+    //         break;
 
-        case 4:
-            buildBeam(L, G);
-            break;
+    //     case 4:
+    //         buildBeam(L, G);
+    //         break;
 
-        case 5:
-            break;
+    //     case 5:
+    //         break;
 
-        case 6:
-            cout << "Id beam yang ingin di recharge: ";
-            cin >> beamID;
-            beamRecharge(L, beamID);
-            break;
+    //     case 6:
+    //         cout << "Id beam yang ingin di recharge: ";
+    //         cin >> beamID;
+    //         beamRecharge(L, beamID);
+    //         break;
 
-        default:
-            cout << "Input salah";
-            break;
-        }
+    //     default:
+    //         cout << "Input salah";
+    //         break;
+    //     }
 
-        input = menu();
-    }
+    //     input = menu();
+    // }
 
     // buildHalteGraph(G);
     // buildJalan(G);

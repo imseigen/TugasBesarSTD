@@ -325,7 +325,63 @@ void printHalteGraph(HalteGraph G, beamList L)
 
         v = v->nextHalte;
     }
+}
 
     // Stack
-    
-}
+    void createStack (Stack &S)
+    {
+        S.Top = nullptr;
+    }
+
+    bool isEmpty (Stack S)
+    {
+        return S.Top == nullptr;
+    }
+
+    void push (Stack &S, adrHalteVertex x)
+    {
+        if (isEmpty(S)) 
+        {
+            S.Top = x;
+        } else {
+            x->nextHalte = S.Top;
+            S.Top = x;
+        }
+    }
+
+    adrHalteVertex pop (Stack &S)
+    {
+        adrHalteVertex x = S.Top;
+
+        if (x->nextHalte == nullptr)
+        {
+            S.Top = nullptr;
+        } 
+        else 
+        {
+            S.Top = x->nextHalte;
+            x->nextHalte = nullptr;
+        }
+
+        return x;
+    }
+
+    void printInfo (Stack S)
+    {
+        Stack q;
+        adrHalteVertex x;
+
+        while (!isEmpty(S))
+        {
+            x = pop(S);
+            cout << x->halteID << " ";
+            push(q, x);
+        }
+        
+        while (!isEmpty(q))
+        {
+            x = pop(q);
+            push(S, x);
+        }
+        cout << endl;
+    }
