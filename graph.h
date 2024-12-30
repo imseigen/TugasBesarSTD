@@ -35,8 +35,8 @@ typedef struct beam* adrBeam;
 
 struct beam
 {
-    string idBeam;
-    adrHalteVertex historyJalan[10]; 
+    string idBeam; 
+    int battery = 10;
     adrHalteVertex location;
     adrBeam nextBeam;
 };

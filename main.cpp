@@ -14,6 +14,7 @@ int menu ()
     cout << "4. Tambah beam" << endl;
     cout << "5. Kendarai beam" << endl;
     cout << "6. Recharge beam" << endl;
+    cout << "7. Status beam" << endl;
     cout << "0. Keluar" << endl;
     cout << "===========================\n";
     cout << "Input anda: ";
@@ -31,6 +32,7 @@ int main()
     initBeamList(L);
     
     string beamID, tujuan;
+    adrBeam b;
 
     int input = menu();
 
@@ -67,6 +69,18 @@ int main()
             cout << "Id beam yang ingin di recharge: ";
             cin >> beamID;
             beamRecharge(L, beamID);
+            break;
+
+        case 7: 
+            cout << "Id beam: ";
+            cin >> beamID;
+
+            b = searchBeam(L, beamID);
+            cout << "\nBaterai beam: " << b->battery << endl;
+            cout << endl;
+            break;
+
+        case 0: 
             break;
 
         default:

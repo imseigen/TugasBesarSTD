@@ -292,7 +292,7 @@ void visit(bool visited[], HalteGraph G, adrHalteVertex x)
 }
 
 void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
-{/*
+{
     adrBeam b = searchBeam(L, beamID);
 
     if (b == nullptr)
@@ -302,61 +302,68 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
     else 
     {
         adrHalteVertex v = searchHalte(G, tujuan);
+
         if (v == nullptr)
         {
             cout << "Tujuan tidak ada\n";
         }
         else
         {   
+            int jarak = 0;
             Stack S;
             bool visited[50];
-            adrHalteVertex x;
+            elmStack* x;
             adrJalan w;
-            int beamBattery = 0;
+
+            createStack(S);
 
             for (int i = 0; i < G.count; i++)
             {
                 visited[i] = false;
             }
 
-            push(S, v);
+            x = createElmStack(v);
+            push(S, x);
+
             while (!isEmpty(S))
             {
                 x = pop(S);
-                if (!isVisited(visited, G, x))
+                if (!isVisited(visited, G, x->info))
                 {
-                    visit(visited, G, x);
+                    visit(visited, G, x->info);
 
                     // Add history
-                    if (beamBattery >= 10)
+                    if (b->battery <= 0)
                     {
+                        b->location = x->info;
                         cout << "Baterai beam habis\n";
                         return;
+                    } else {
+                        b->historyJalan[10 - b->battery] = x->info;
+                        b->battery--;
                     }
 
-                    b->historyJalan[beamBattery] = x;
-                    beamBattery++;
-
-                    if (x == v)
+                    if (x->info == v)
                     {
-                        b->location = x;
-                        cout << "Sudah sampai di tujuan dengan jarak\n";
-                        break;;
+                        b->location = x->info;
+                        cout << "Sudah sampai di tujuan dengan jarak " << jarak << " m\n";
+                        return;;
                     }
 
-                    w = x->firstEdge;
+                    w = x->info->firstEdge;
                     while (w != nullptr)
                     {
                         if (!isVisited(visited, G, w->tujuanHalte))
                         {
-                            push(S, w->tujuanHalte);
+                            x = createElmStack(w->tujuanHalte);
+                            push(S, x);
+                            jarak += w->jarakHalte;
                         }
                     }
                 }
             }
         }
-
-    }*/
+    }
 
     /*adrBeam b = L.firstBeam;
     while (b != nullptr)
@@ -376,10 +383,7 @@ void beamRecharge(beamList &L, string idBeam)
 
     if (b != nullptr)
     {
-        for (int i = 0; i < 10; i++)
-        {
-            b->historyJalan[i] = nullptr;
-        }
+        b->battery = 10;
 
         cout << "Beam " << idBeam << " di-recharge." << endl;
     }
