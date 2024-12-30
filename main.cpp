@@ -30,74 +30,65 @@ int main()
     initHalteGraph(G);
     initBeamList(L);
     
-    string beamID;
+    string beamID, tujuan;
 
-    // int input = menu();
+    int input = menu();
 
-    // while (input != 0)
-    // {
-    //     switch (input)
-    //     {
-    //     case 1:
-    //         buildHalteGraph(G);
-    //         break;
+    while (input != 0)
+    {
+        switch (input)
+        {
+        case 1:
+            buildHalteGraph(G);
+            break;
 
-    //     case 2:
-    //         buildJalan(G);
-    //         break;
+        case 2:
+            buildJalan(G);
+            break;
 
-    //     case 3:
-    //         printHalteGraph(G, L);
-    //         break;
+        case 3:
+            printHalteGraph(G, L);
+            break;
 
-    //     case 4:
-    //         buildBeam(L, G);
-    //         break;
+        case 4:
+            buildBeam(L, G);
+            break;
 
-    //     case 5:
-    //         break;
+        case 5:
+            cout << "Id beam yang dipakai: ";
+            cin >> beamID;
+            cout << "Halte tujuan: ";
+            cin >> tujuan;
 
-    //     case 6:
-    //         cout << "Id beam yang ingin di recharge: ";
-    //         cin >> beamID;
-    //         beamRecharge(L, beamID);
-    //         break;
+            beamJalan(L, G, beamID, tujuan);
+            break;
 
-    //     default:
-    //         cout << "Input salah";
-    //         break;
-    //     }
+        case 6:
+            cout << "Id beam yang ingin di recharge: ";
+            cin >> beamID;
+            beamRecharge(L, beamID);
+            break;
 
-    //     input = menu();
-    // }
+        default:
+            cout << "Input salah";
+            break;
+        }
 
-    // buildHalteGraph(G);
-    // buildJalan(G);
-    // printHalteGraph(G);
+        input = menu();
+    }
 
-    // insertBeam(L, G, "Beam 1", G.firstHalte);
-    // insertBeam(L, G, "Beam 2", G.firstHalte);
-    // insertBeam(L, G, "Beam 3", G.firstHalte);
-
-    // beamJalan(L, G);
-    // beamRecharge(L, "Beam 1");
-    // beamRecharge(L, "Beam 2");
-    // beamRecharge(L, "Beam 3");
-
+    /*
     Stack S;
     createStack(S);
-    buildHalteGraph(G);
-    printHalteGraph(G,L);
-    cout << endl;
-
-    adrHalteVertex x = G.firstHalte;
-    push(S, x);
+    elmStack* p = createElmStack(G.firstHalte);
+    push(S, p);
     printInfo(S);
-    cout << endl;
-
-    adrHalteVertex y = pop(S);
-    printHalteGraph(G, L);
+    p = createElmStack(G.firstHalte->nextHalte);
+    push(S, p);
     printInfo(S);
+    p = pop(S);
+    printInfo(S);
+    */
 
     return 0;
 }

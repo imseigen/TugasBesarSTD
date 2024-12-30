@@ -45,7 +45,7 @@ void addHalteVertex(HalteGraph &G, string halteID)
             }
             v->nextHalte = newHalte;
         }
-        
+        G.count++;
         cout << "Halte berhasil ditambahkan\n";
     }
 
@@ -62,6 +62,17 @@ adrHalteVertex searchHalte(HalteGraph G, string halteID)
     }
 
     return v;
+}
+
+adrJalan searchJalan(HalteGraph G, adrHalteVertex v, adrHalteVertex x)
+{
+    adrJalan p = v->firstEdge;
+    
+    while (p != nullptr && p->tujuanHalte != x)
+    {
+        p = p->nextEdge;
+    }
+    return p;
 }
 
 void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, int jarakHalte)
@@ -236,8 +247,15 @@ void buildBeam (beamList &L, HalteGraph G)
             cin >> locationID;
             location = searchHalte(G, locationID);
 
+            if (location != nullptr)
+            {
             insertBeam(L, G, beamID, location);
             cout << "\nBeam berhasil dimasukkan\n";
+            } 
+            else
+            {
+                cout << "\nHalte tidak ada\n";
+            }
         }
 
         cout << "\nMasukkan id beam ('0' untuk keluar): ";
@@ -245,8 +263,36 @@ void buildBeam (beamList &L, HalteGraph G)
     }
 }
 
-void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
+bool isVisited(bool visited[], HalteGraph G, adrHalteVertex x)
 {
+    int i = 0;
+    adrHalteVertex p = G.firstHalte;
+
+    while (p != nullptr && p->halteID != x->halteID)
+    {
+        p = p->nextHalte;
+        i++;
+    }
+
+    return visited[i];
+}
+
+void visit(bool visited[], HalteGraph G, adrHalteVertex x)
+{
+    int i = 0;
+    adrHalteVertex p = G.firstHalte;
+
+    while (p != nullptr && p->halteID != x->halteID)
+    {
+        p = p->nextHalte;
+        i++;
+    }
+
+    visited[i] = true;
+}
+
+void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
+{/*
     adrBeam b = searchBeam(L, beamID);
 
     if (b == nullptr)
@@ -256,9 +302,61 @@ void beamJalan(beamList &L, HalteGraph G, string beamID, string tujuan)
     else 
     {
         adrHalteVertex v = searchHalte(G, tujuan);
+        if (v == nullptr)
+        {
+            cout << "Tujuan tidak ada\n";
+        }
+        else
+        {   
+            Stack S;
+            bool visited[50];
+            adrHalteVertex x;
+            adrJalan w;
+            int beamBattery = 0;
 
+            for (int i = 0; i < G.count; i++)
+            {
+                visited[i] = false;
+            }
 
-    }
+            push(S, v);
+            while (!isEmpty(S))
+            {
+                x = pop(S);
+                if (!isVisited(visited, G, x))
+                {
+                    visit(visited, G, x);
+
+                    // Add history
+                    if (beamBattery >= 10)
+                    {
+                        cout << "Baterai beam habis\n";
+                        return;
+                    }
+
+                    b->historyJalan[beamBattery] = x;
+                    beamBattery++;
+
+                    if (x == v)
+                    {
+                        b->location = x;
+                        cout << "Sudah sampai di tujuan dengan jarak\n";
+                        break;;
+                    }
+
+                    w = x->firstEdge;
+                    while (w != nullptr)
+                    {
+                        if (!isVisited(visited, G, w->tujuanHalte))
+                        {
+                            push(S, w->tujuanHalte);
+                        }
+                    }
+                }
+            }
+        }
+
+    }*/
 
     /*adrBeam b = L.firstBeam;
     while (b != nullptr)
@@ -290,7 +388,6 @@ void beamRecharge(beamList &L, string idBeam)
         cout << "Beam dengan ID " << idBeam << " tidak ditemukan." << endl;
     }
 }
-
 
 void printHalteGraph(HalteGraph G, beamList L)
 {
@@ -328,54 +425,71 @@ void printHalteGraph(HalteGraph G, beamList L)
 }
 
     // Stack
-    void createStack (Stack &S)
+void createStack (Stack &S)
+{
+    S.Top = nullptr;
+}
+
+elmStack* createElmStack (adrHalteVertex x)
+{
+    elmStack* p = new elmStack();
+    p->info = x;
+    p->next = nullptr;
+    return p;
+}
+
+bool isEmpty (Stack S)
+{
+    return S.Top == nullptr;
+}
+
+void push (Stack &S, elmStack* p)
+{
+    if (isEmpty(S)) 
+    {
+        S.Top = p;
+    } else {
+        p->next = S.Top;
+        S.Top = p;
+    }
+}
+
+elmStack* pop (Stack &S)
+{
+    elmStack* p = S.Top;
+
+    if (p->next == nullptr)
     {
         S.Top = nullptr;
-    }
-
-    bool isEmpty (Stack S)
+    } 
+    else 
     {
-        return S.Top == nullptr;
+        S.Top = p->next;
+        p->next = nullptr;
     }
 
-    void push (Stack &S, adrHalteVertex x)
+    return p;
+}
+
+void printInfo (Stack S)
+{
+    Stack q;
+    createStack(q);
+    
+    elmStack* p;
+
+    while (!isEmpty(S))
     {
-        if (isEmpty(S)) 
-        {
-            S.Top = x;
-        } else {
-            x->nextHalte = S.Top;
-            S.Top = x;
-        }
+        p = pop(S);
+        push(q, p);
+        cout << p->info->halteID << " ";
     }
-
-    adrHalteVertex pop (Stack &S)
+    
+    while (!isEmpty(q))
     {
-        adrHalteVertex x = S.Top;
-
-        if (x->nextHalte == nullptr)
-        {
-            S.Top = nullptr;
-        } 
-        else 
-        {
-            S.Top = x->nextHalte;
-        }
-
-        return x;
+        p = pop(q);
+        push(S, p); 
     }
 
-    void printInfo (Stack S)
-    {
-        Stack q = S;
-        adrHalteVertex x;
-
-        while (!isEmpty(S))
-        {
-            x = pop(S);
-            cout << x->halteID << " ";
-        }
-        
-        S.Top = q.Top;
-        cout << endl;
-    }
+    cout << endl;
+}

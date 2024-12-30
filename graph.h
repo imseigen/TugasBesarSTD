@@ -27,6 +27,7 @@ struct jalan
 struct HalteGraph
 {
     adrHalteVertex firstHalte;
+    int count = 0;
 };
 
 // Beam
@@ -46,9 +47,15 @@ struct beamList
 };
 
 // Stack
+struct elmStack
+{
+    adrHalteVertex info;
+    elmStack *next;
+};
+
 struct Stack
 {
-    adrHalteVertex Top;
+    elmStack *Top;
 };
 
 
@@ -58,6 +65,7 @@ void createJalan(adrHalteVertex tujuan, int jarakHalte, adrJalan &e);
 void initHalteGraph(HalteGraph &G);
 void addHalteVertex(HalteGraph &G, string halteID);
 adrHalteVertex searchHalte(HalteGraph G, string halteID);
+adrJalan searchJalan(HalteGraph G, adrHalteVertex v, adrHalteVertex x);
 void addJalan(HalteGraph &G, adrHalteVertex asal, adrHalteVertex tujuanHalte, int jarakHalte);
 void buildHalteGraph(HalteGraph &G);
 void buildJalan(HalteGraph &G);
@@ -77,9 +85,10 @@ void printHalteGraph(HalteGraph G, beamList L);
 
 // Stack
 void createStack (Stack &S);
+elmStack* createElmStack (adrHalteVertex x);
 bool isEmpty (Stack S);
-void push (Stack &S, adrHalteVertex x);
-adrHalteVertex pop (Stack &S);
+void push (Stack &S, elmStack* x);
+elmStack* pop (Stack &S);
 void printInfo (Stack S);
 
 #endif
